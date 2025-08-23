@@ -10,7 +10,17 @@ import eslintJs from '@eslint/js';
 export default tseslint.config(
   // Global ignores
   {
-    ignores: ['node_modules/', 'coverage/', 'dist/', 'build/', '.next/'],
+    ignores: [
+      'node_modules/',
+      'coverage/',
+      'dist/',
+      'build/',
+      '.next/',
+      'next-env.d.ts',
+      '*.config.js',
+      '*.config.mjs',
+      '*.setup.js',
+    ],
   },
 
   // Base configs
@@ -21,6 +31,11 @@ export default tseslint.config(
   {
     ...react.configs.flat.recommended,
     files: ['**/*.{ts,tsx,js,jsx}'],
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
   },
 
   // Custom rules and plugins
