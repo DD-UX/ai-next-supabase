@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",
+    "@types/yup": "^0.29.14",
     "formik": "^2.4.6",
     "next": "15.5.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
