@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
@@ -19,9 +19,7 @@ export const metadata: Metadata = {
   description: 'Generated with AI and dedication by DD-UX',
 };
 
-type RootLayoutProps = {
-  children: ReactNode;
-};
+type RootLayoutProps = PropsWithChildren;
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
