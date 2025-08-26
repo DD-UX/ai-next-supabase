@@ -2,7 +2,7 @@
 
 import { createContext, type PropsWithChildren, useState } from 'react';
 import { type AuthError } from '@supabase/supabase-js';
-import { type FormikHelpers, type FormikValues, useFormik } from 'formik';
+import { type FormikHelpers, useFormik } from 'formik';
 
 import { supabase } from '@/lib/supabase/client';
 
