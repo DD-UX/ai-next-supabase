@@ -1,12 +1,18 @@
 'use client';
 
-import { createContext, useState, type PropsWithChildren } from 'react';
-import { useFormik, type FormikValues, type FormikHelpers } from 'formik';
-import { signUpSchema } from '../helpers/validation';
-import { supabase } from '@/lib/supabase/client';
+import { createContext, type PropsWithChildren, useState } from 'react';
 import { type AuthError } from '@supabase/supabase-js';
+import { type FormikHelpers, type FormikValues, useFormik } from 'formik';
 
-type SignUpFormType = FormikValues;
+import { supabase } from '@/lib/supabase/client';
+
+import { signUpSchema } from '../helpers/validation';
+
+type SignUpFormType = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 type SignUpContextProps = {
   formikInstance: ReturnType<typeof useFormik<SignUpFormType>>;
@@ -58,9 +64,5 @@ export const SignUpProvider = ({ children }: PropsWithChildren) => {
     error,
   };
 
-  return (
-    <SignUpContext.Provider value={contextValue}>
-      {children}
-    </SignUpContext.Provider>
-  );
+  return <SignUpContext.Provider value={contextValue}>{children}</SignUpContext.Provider>;
 };
