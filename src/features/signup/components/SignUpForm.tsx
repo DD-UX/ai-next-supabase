@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import { SignUpContext } from '../../contexts/SignUpContext';
+import { SignUpContext } from '@/features/signup/contexts/SignUpContext';
 
 export const SignUpForm = () => {
   const { formikInstance, isLoading, error } = useContext(SignUpContext);
