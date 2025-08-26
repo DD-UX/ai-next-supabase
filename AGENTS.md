@@ -2,6 +2,8 @@
 
 This file provides comprehensive guidance for JetBrains Junie, Google Jules, and other AI-assisted development tools when working with the AI Next Supabase codebase.
 
+**Note:** This file is mirrored at `.github/guidelines.md`. Any changes made to one file **must** be duplicated in the other.
+
 ---
 
 ## 🚀 Quick Start Commands
@@ -108,24 +110,30 @@ src/
 
 ### Component Structure Convention
 
-- **PREFER** creating component and test files directly inside the `components` directory.
-- **AVOID** creating a separate folder for each component unless it has dedicated child components.
+- **MUST** keep a flat structure for components within the `components` directory of a feature.
+- **AVOID** creating a separate folder for each component, even if they are related. A folder should only be used to group a component and its dedicated, non-reusable child components.
+- **RATIONALE**: This avoids deep nesting and makes components easier to find.
 
 <!-- end list -->
 
 ```
-// ✅ Correct (Simple Component)
+// ✅ Correct (Simple or Complex Component)
 components/
 ├── Button.tsx
 └── Button.test.tsx
+├── ButtonIcon.tsx
+└── ButtonIcon.test.tsx
+```
 
-// ✅ Correct (Complex Component with Children)
+```
+// ❌ Incorrect
 components/
-├── ComplexForm/
-│   ├── ComplexForm.tsx
-│   ├── ComplexForm.test.tsx
-│   └── components/
-│       └── ChildComponent.tsx
+└── Button/
+    ├── Button.tsx
+    └── Button.test.tsx
+└── ButtonIcon/
+    ├── ButtonIcon.tsx
+    └── ButtonIcon.test.tsx
 ```
 
 ---
