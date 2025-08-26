@@ -1,7 +1,8 @@
 'use client';
 
 import { useContext } from 'react';
-import { SignUpContext } from '../../contexts/SignUpContext';
+
+import { SignUpContext } from '@/features/signup/contexts/SignUpContext';
 
 export const SignUpForm = () => {
   const { formikInstance, isLoading, error } = useContext(SignUpContext);
@@ -47,7 +48,9 @@ export const SignUpForm = () => {
               value={values.password}
               disabled={isLoading}
             />
-            {touched.password && errors.password && <div className="text-sm text-red-600">{String(errors.password)}</div>}
+            {touched.password && errors.password && (
+              <div className="text-sm text-red-600">{String(errors.password)}</div>
+            )}
           </div>
 
           <div>
