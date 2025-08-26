@@ -1,4 +1,4 @@
-import { SignUpForm } from '@/features/signup/components/SignUpForm/SignUpForm';
+import { SignUpForm } from '@/features/signup/components/SignUpForm';
 import { SignUpProvider } from '@/features/signup/contexts/SignUpContext';
 
 const SignUpPage = () => {

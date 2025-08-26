@@ -1,4 +1,4 @@
-import { signUpSchema } from './validation';
+import { signUpSchema } from './signup-validation-helpers';
 
 describe('signUpSchema', () => {
   const validData = {

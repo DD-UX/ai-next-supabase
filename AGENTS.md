@@ -90,16 +90,42 @@ src/
 └── __mocks__/         # Jest mocks
 ```
 
-### Component Structure Convention
+### File Naming Conventions
 
-Follow the established folder-per-component pattern within each feature's `components` directory:
+- **MUST** suffix constants files with `-constants.ts`.
+- **MUST** suffix helper files with `-helpers.ts`.
+- **RATIONALE**: This provides a consistent naming scheme across the codebase, making it easier to identify the purpose of files at a glance.
+
+<!-- end list -->
 
 ```
-ComponentName/
-├── ComponentName.tsx      # Main component file
-├── ComponentName.test.tsx # Unit tests
-└── components/            # Child components specific to this component
-    └── ChildComponent/
+// ✅ Correct
+├── constants/
+│   └── signup-constants.ts
+├── helpers/
+│   └── validation-helpers.ts
+```
+
+### Component Structure Convention
+
+- **PREFER** creating component and test files directly inside the `components` directory.
+- **AVOID** creating a separate folder for each component unless it has dedicated child components.
+
+<!-- end list -->
+
+```
+// ✅ Correct (Simple Component)
+components/
+├── Button.tsx
+└── Button.test.tsx
+
+// ✅ Correct (Complex Component with Children)
+components/
+├── ComplexForm/
+│   ├── ComplexForm.tsx
+│   ├── ComplexForm.test.tsx
+│   └── components/
+│       └── ChildComponent.tsx
 ```
 
 ---
@@ -149,8 +175,9 @@ interface UserData {
 
 #### Import Strategy
 
-- Importing `React` is **not mandatory** in Next.js components, but it can be included if needed.
-- **Use individual imports** for tree-shaking optimization.
+- **MUST** use individual imports for tree-shaking optimization.
+- **AVOID** using the `React.` notation (e.g., `React.ReactNode`). Import types directly (e.g., `import type { ReactNode } from 'react';`).
+- Importing `React` itself is **not mandatory** in Next.js components.
 
 #### Component Definition
 
@@ -264,9 +291,9 @@ import { fetchUsers } from '@/lib/sdk/fetchers';
 
 #### Path Resolution Guidelines
 
-- **PREFER** absolute paths using configured aliases
-- **ALLOW** relative paths for same-level or up to 2 levels up (`../..`)
-- **AVOID** deep relative paths (`../../../`)
+- **MUST** prefer absolute paths using configured aliases (`@/`) for imports outside of the current feature module.
+- **ALLOW** relative paths for imports within the same feature module (e.g., `../helpers`).
+- **AVOID** deep relative paths (`../../../`).
 
 ---
 

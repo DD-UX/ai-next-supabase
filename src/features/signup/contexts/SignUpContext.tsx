@@ -6,7 +6,7 @@ import { type FormikHelpers, type FormikValues, useFormik } from 'formik';
 
 import { supabase } from '@/lib/supabase/client';
 
-import { signUpSchema } from '../helpers/validation';
+import { signUpSchema } from '../helpers/signup-validation-helpers';
 
 type SignUpFormType = {
   email: string;
