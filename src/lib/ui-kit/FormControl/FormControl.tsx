@@ -1,30 +1,23 @@
 'use client';
 
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { type ReactNode, type PropsWithChildren } from 'react';
 
-type FormControlProps = InputHTMLAttributes<HTMLInputElement> & {
+type FormControlProps = PropsWithChildren<{
   label: string;
+  htmlFor?: string;
   error?: ReactNode;
+}>;
+
+const FormControl = ({ label, htmlFor, error, children }: FormControlProps) => {
+  return (
+    <div className="grid gap-1">
+      <label htmlFor={htmlFor} className="block text-sm font-medium text-gray-700 m-0">
+        {label}
+      </label>
+      {children}
+      {error && <div className="text-sm text-red-600 m-0">{error}</div>}
+    </div>
+  );
 };
-
-const FormControl = forwardRef<HTMLInputElement, FormControlProps>(
-  ({ label, error, ...props }, ref) => {
-    return (
-      <div>
-        <label htmlFor={props.id} className="block text-sm font-medium text-gray-700">
-          {label}
-        </label>
-        <input
-          ref={ref}
-          {...props}
-          className="block w-full px-3 py-2 mt-1 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-        {error && <div className="text-sm text-red-600">{error}</div>}
-      </div>
-    );
-  },
-);
-
-FormControl.displayName = 'FormControl';
 
 export default FormControl;

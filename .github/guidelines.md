@@ -431,6 +431,39 @@ const MySimpleComponent = ({ children }: MySimpleComponentProps) => {
 - **RATIONALE**: Improves readability and maintainability of complex class logic.
 
 <!-- end list -->
+
+### Layout and Spacing
+- **MUST** use `grid` with `gap` for layout and spacing between elements.
+- **AVOID** using margins (e.g., `mt-4`, `mb-2`) on individual components.
+- **MUST** reset default margins on semantic tags (e.g., `h1`, `p`) by using `m-0`.
+- **RATIONALE**: Using a grid system with gaps provides more consistent and predictable spacing than individual margins, which can sometimes stack or collapse unexpectedly.
+
+<!-- end list -->
+
+```tsx
+// ❌ Incorrect - Using margins
+const MyComponent = () => {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Title</h1>
+      <p className="text-gray-600 mt-2">Some text here.</p>
+      <button className="mt-4">Click me</button>
+    </div>
+  );
+};
+
+// ✅ Correct - Using grid and gap
+const MyComponent = () => {
+  return (
+    <div className="grid gap-2.5">
+      <h1 className="text-2xl font-bold m-0">Title</h1>
+      <p className="text-gray-600 m-0">Some text here.</p>
+      <button>Click me</button>
+    </div>
+  );
+};
+```
+
 ```tsx
 // ✅ Correct
 import clsx from 'clsx';

@@ -1,8 +1,8 @@
 const AppPage = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">Welcome to the App</h1>
-      <p className="mt-2 text-gray-600">This is a protected page.</p>
+    <div className="grid gap-2.5">
+      <h1 className="text-3xl font-bold m-0">Welcome to the App</h1>
+      <p className="text-gray-600 m-0">This is a protected page.</p>
     </div>
   );
 };
