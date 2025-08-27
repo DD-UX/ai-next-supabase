@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
+import useToggle from '@/features/common/hooks/useToggle';
 
 type AppLayoutProps = PropsWithChildren<{}>;
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, toggleSidebarOpen] = useToggle(false);
 
   const sidebarClassName = clsx(
     'fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform',
@@ -44,7 +45,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <header className="flex items-center justify-between h-16 bg-white border-b md:justify-end">
           <button
             className="px-4 text-gray-500 md:hidden"
-            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            onClick={toggleSidebarOpen}
           >
             {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

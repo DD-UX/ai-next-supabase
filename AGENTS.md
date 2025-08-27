@@ -80,6 +80,9 @@ src/
 │   └── sample-b/      # Example: Feature B
 │       ├── components/
 │       ├── ...
+│   └── common/        # Shared hooks, components, etc.
+│       ├── hooks/
+│       └── ...
 ├── lib/               # Shared libraries, utilities, and SDK
 │   ├── api/           # Core API client setup
 │   ├── sdk/           # Data interaction layer
