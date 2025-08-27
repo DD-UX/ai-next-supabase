@@ -42,6 +42,7 @@ This file provides comprehensive guidance for JetBrains Junie, Google Jules, and
 - **State Management**: React Context, **Formik** for forms
 - **Routing**: Next.js App Router
 - **Styling**: **Tailwind CSS** for a utility-first approach
+- **Icons**: **Lucide** from **React Icons**
 - **Database**: Supabase
 - **Testing**: Jest with React Testing Library
 - **Node Version**: 22.11.x (required)
@@ -87,7 +88,8 @@ src/
 │   │   ├── creators/  # Functions for creating new data
 │   │   ├── updaters/  # Functions for updating existing data
 │   │   └── deleters/  # Functions for deleting data
-│   └── supabase/      # Supabase client and helpers
+│   ├── supabase/      # Supabase client and helpers
+│   └── ui-kit/        # Shared UI components
 ├── styles/            # Global styles (e.g., Tailwind base styles)
 └── __mocks__/         # Jest mocks
 ```
