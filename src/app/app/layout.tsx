@@ -2,17 +2,25 @@
 
 import { useState, type PropsWithChildren } from 'react';
 import { Menu, X } from 'lucide-react';
+import clsx from 'clsx';
 
-const AppLayout = ({ children }: PropsWithChildren) => {
+type AppLayoutProps = PropsWithChildren;
+
+const AppLayout = ({ children }: AppLayoutProps) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex md:flex-col`}
+        className={clsx(
+          'fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform',
+          {
+            'translate-x-0': isSidebarOpen,
+            '-translate-x-full': !isSidebarOpen,
+          },
+          'transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex md:flex-col',
+        )}
       >
         <div className="flex items-center justify-center h-16 bg-white border-b">
           <h1 className="text-2xl font-bold text-indigo-600">Dashboard</h1>

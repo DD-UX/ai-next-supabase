@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { getValidationSchema } from '@/features/login/helpers/login-validation-helpers';
 import { supabase } from '@/lib/supabase/client';
+import { paths } from '@/app/paths';
 
 type LoginContextProps = {
   formikInstance: FormikInstance<any>;
@@ -13,9 +14,11 @@ type LoginContextProps = {
   error: Error | null;
 };
 
+type LoginProviderProps = PropsWithChildren;
+
 export const LoginContext = createContext<LoginContextProps>({} as LoginContextProps);
 
-export const LoginProvider = ({ children }: PropsWithChildren) => {
+export const LoginProvider = ({ children }: LoginProviderProps) => {
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
 
@@ -37,7 +40,7 @@ export const LoginProvider = ({ children }: PropsWithChildren) => {
       if (error) {
         setError(error);
       } else {
-        router.push('/app');
+        router.push(paths.app);
       }
 
       setSubmitting(false);

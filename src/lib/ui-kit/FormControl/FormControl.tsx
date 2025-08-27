@@ -7,7 +7,7 @@ type FormControlProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: ReactNode;
 };
 
-export const FormControl = forwardRef<HTMLInputElement, FormControlProps>(
+const FormControl = forwardRef<HTMLInputElement, FormControlProps>(
   ({ label, error, ...props }, ref) => {
     return (
       <div>
@@ -26,3 +26,5 @@ export const FormControl = forwardRef<HTMLInputElement, FormControlProps>(
 );
 
 FormControl.displayName = 'FormControl';
+
+export default FormControl;

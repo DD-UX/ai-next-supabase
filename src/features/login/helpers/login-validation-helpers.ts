@@ -1,7 +1,7 @@
-import * as Yup from 'yup';
+import * as yup from 'yup';
 
 export const getValidationSchema = () =>
-  Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().required('Required'),
+  yup.object().shape({
+    email: yup.string().email('Invalid email').required('Required'),
+    password: yup.string().required('Required'),
   });

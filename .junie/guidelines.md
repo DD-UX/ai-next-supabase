@@ -243,6 +243,23 @@ import { fetchUsers } from '@/lib/sdk/fetchers';
 - **ALLOW** relative paths for same-level or up to 2 levels up (`../..`)
 - **AVOID** deep relative paths (`../../../`)
 
+#### Route Management
+- **MUST** use the `paths` object from `src/app/paths.ts` for all internal navigation links.
+- **AVOID** hardcoding route strings directly in components or hooks.
+- **RATIONALE**: Centralizing path definitions makes the codebase easier to maintain and prevents broken links when routes change.
+
+```tsx
+// ✅ Correct
+import { paths } from '@/app/paths';
+// ...
+router.push(paths.app);
+```
+
+```tsx
+// ❌ Incorrect
+router.push('/app');
+```
+
 ---
 
 ## 🚨 **CRITICAL: Non-Regression & Code Preservation Principles**

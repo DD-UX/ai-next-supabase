@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { paths } from './app/paths';
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
@@ -38,12 +39,12 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session && request.nextUrl.pathname.startsWith('/app')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (!session && request.nextUrl.pathname.startsWith(paths.app)) {
+    return NextResponse.redirect(new URL(paths.login, request.url));
   }
 
-  if (session && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup')) {
-    return NextResponse.redirect(new URL('/app', request.url));
+  if (session && (request.nextUrl.pathname === paths.login || request.nextUrl.pathname === paths.signup)) {
+    return NextResponse.redirect(new URL(paths.app, request.url));
   }
 
   return response;
