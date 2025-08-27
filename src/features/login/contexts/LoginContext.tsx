@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { getValidationSchema } from '@/features/login/helpers/login-validation-helpers';
 import { supabase } from '@/lib/supabase/client';
-import { paths } from '@/app/paths';
+import { PATHS } from '@/app/paths';
 
 type LoginContextProps = {
   formikInstance: FormikInstance<any>;
@@ -14,7 +14,7 @@ type LoginContextProps = {
   error: Error | null;
 };
 
-type LoginProviderProps = PropsWithChildren;
+type LoginProviderProps = PropsWithChildren<{}>;
 
 export const LoginContext = createContext<LoginContextProps>({} as LoginContextProps);
 
@@ -22,29 +22,31 @@ export const LoginProvider = ({ children }: LoginProviderProps) => {
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
 
+  const onSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    setError(null);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (error) {
+      setError(error);
+    } else {
+      router.push(PATHS.app);
+    }
+
+    setSubmitting(false);
+  };
+
   const formikInstance = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: getValidationSchema(),
-    onSubmit: async (values, { setSubmitting }) => {
-      setSubmitting(true);
-      setError(null);
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      });
-
-      if (error) {
-        setError(error);
-      } else {
-        router.push(paths.app);
-      }
-
-      setSubmitting(false);
-    },
+    onSubmit,
   });
 
   const { isSubmitting } = formikInstance;

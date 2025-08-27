@@ -100,6 +100,16 @@ src/
 - **MUST** suffix helper files with `-helpers.ts`.
 - **RATIONALE**: This provides a consistent naming scheme across the codebase, making it easier to identify the purpose of files at a glance.
 
+### Constants Naming Convention
+- **MUST** use `UPPER_SNAKE_CASE` for all constants defined in `.ts` files.
+- **AVOID** using camelCase or PascalCase for constant names outside of React components.
+- **RATIONALE**: This is a widely-accepted convention for defining constants and makes them easily distinguishable from other variables.
+
+### Logic in Render
+- **MUST** define elaborated constants and methods before the `return` statement.
+- **AVOID** placing complex logic directly in the render block.
+- **RATIONALE**: This improves readability and separates logic from the view.
+
 <!-- end list -->
 
 ```
