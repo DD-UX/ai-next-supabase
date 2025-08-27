@@ -142,6 +142,19 @@ interface UserData {
 3.  **CREATE** new models only when necessary
 4.  **FOLLOW** existing patterns in `src/lib/sdk/models/` as templates
 
+#### `yup` Import Casing
+- **MUST** import `yup` in all lowercase.
+- **RATIONALE**: Ensures consistency across the codebase.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+import * as yup from 'yup';
+
+// ❌ Incorrect
+import * as Yup from 'yup';
+```
+
 ### ⚛️ React & Next.js Standards
 
 #### `use client` Directive
@@ -171,6 +184,95 @@ interface UserData {
 <!-- end list -->
 
 ```tsx
+// ❌ Incorrect - Logic inside useFormik
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      const { error } = await supabase.auth.signInWithPassword(values);
+      if (error) setError(error);
+      else router.push(PATHS.app);
+      setSubmitting(false);
+    },
+  });
+  // ...
+};
+
+// ✅ Correct - Logic extracted to a separate function
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const onSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    const { error } = await supabase.auth.signInWithPassword(values);
+    if (error) setError(error);
+    else router.push(PATHS.app);
+    setSubmitting(false);
+  };
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit,
+  });
+  // ...
+};
+```
+
+```tsx
+// ❌ Incorrect - clsx call inside JSX
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div
+        className={clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen })}
+      >
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+
+// ✅ Correct - className defined in a constant
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarClassName = clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen });
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div className={sidebarClassName}>
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+```
+
+```tsx
+// ✅ Correct
+export const PATHS = {
+  login: '/login',
+  app: '/app',
+};
+
+// ❌ Incorrect
+export const paths = {
+  login: '/login',
+  app: '/app',
+};
+```
+
+```tsx
 // ✅ Correct
 const MyComponent = ({ prop1, prop2 }: MyComponentProps) => {
   return <div>Content</div>;
@@ -178,6 +280,51 @@ const MyComponent = ({ prop1, prop2 }: MyComponentProps) => {
 
 // ❌ Avoid FC<> wrapper
 // const MyComponent: FC<MyComponentProps> = ({ prop1, prop2 }) => { ... };
+```
+
+#### Component Export
+- **MUST** use default exports for components.
+- **AVOID** exporting components on the `const` definition line.
+- **RATIONALE**: Enforces a consistent module structure.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+const MyComponent = () => {
+  return <div>Content</div>;
+};
+export default MyComponent;
+
+// ❌ Incorrect
+export const MyComponent = () => {
+  return <div>Content</div>;
+};
+```
+
+#### `PropsWithChildren` Convention
+- **PREFER** using a type alias with `PropsWithChildren` for components that accept `children`.
+- **RATIONALE**: This provides a consistent and extensible pattern for typing components with children.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+import type { PropsWithChildren } from 'react';
+
+type MyComponentProps = PropsWithChildren<{
+  // other props
+}>;
+
+// ✅ Also correct, for components with only children
+type MySimpleComponentProps = PropsWithChildren<{}>;
+
+const MyComponent = ({ children }: MySimpleComponentProps) => {
+  return <div>{children}</div>;
+};
+
+// ❌ Incorrect - Inline typing
+const MyComponentWithInlineTyping = ({ children }: PropsWithChildren) => {
+  return <div>{children}</div>;
+};
 ```
 
 #### Props Typing
@@ -212,6 +359,30 @@ const Button = ({ label, onClick, disabled = false }: ButtonProps) => {
 - **RATIONALE**: This is the standard, utility-first approach for styling in this project. Avoid `<b>` or `<strong>` tags unless they carry semantic meaning.
 
 <!-- end list -->
+
+### Conditional ClassNames
+- **MUST** use a library like `clsx` to handle conditional class names.
+- **AVOID** using ternary operators for conditional classes in JSX.
+- **RATIONALE**: Improves readability and maintainability of complex class logic.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+import clsx from 'clsx';
+
+const MyComponent = ({ isActive, isPrimary }) => {
+  const className = clsx('base-class', {
+    'active-class': isActive,
+    'primary-class': isPrimary,
+  });
+  return <div className={className}>...</div>;
+};
+
+// ❌ Incorrect
+const MyComponentWithTernary = ({ isActive, isPrimary }) => {
+  return <div className={`base-class ${isActive ? 'active-class' : ''} ${isPrimary ? 'primary-class' : ''}`}>...</div>;
+};
+```
 
 ```jsx
 // ✅ Preferred
@@ -260,9 +431,9 @@ import { fetchUsers } from '@/lib/sdk/fetchers';
 
 ```tsx
 // ✅ Correct
-import { paths } from '@/app/paths';
+import { PATHS } from '@/app/paths';
 // ...
-router.push(paths.app);
+router.push(PATHS.app);
 ```
 
 ```tsx
