@@ -42,6 +42,7 @@ This file provides comprehensive guidance for JetBrains Junie, Google Jules, and
 - **State Management**: React Context, **Formik** for forms
 - **Routing**: Next.js App Router
 - **Styling**: **Tailwind CSS** for a utility-first approach
+- **Icons**: **Lucide** from **React Icons**
 - **Database**: Supabase
 - **Testing**: Jest with React Testing Library
 - **Node Version**: 22.11.x (required)
@@ -79,6 +80,9 @@ src/
 │   └── sample-b/      # Example: Feature B
 │       ├── components/
 │       ├── ...
+│   └── common/        # Shared hooks, components, etc.
+│       ├── hooks/
+│       └── ...
 ├── lib/               # Shared libraries, utilities, and SDK
 │   ├── api/           # Core API client setup
 │   ├── sdk/           # Data interaction layer
@@ -87,7 +91,8 @@ src/
 │   │   ├── creators/  # Functions for creating new data
 │   │   ├── updaters/  # Functions for updating existing data
 │   │   └── deleters/  # Functions for deleting data
-│   └── supabase/      # Supabase client and helpers
+│   ├── supabase/      # Supabase client and helpers
+│   └── ui-kit/        # Shared UI components
 ├── styles/            # Global styles (e.g., Tailwind base styles)
 └── __mocks__/         # Jest mocks
 ```
@@ -98,7 +103,92 @@ src/
 - **MUST** suffix helper files with `-helpers.ts`.
 - **RATIONALE**: This provides a consistent naming scheme across the codebase, making it easier to identify the purpose of files at a glance.
 
+### Constants Naming Convention
+- **MUST** use `UPPER_SNAKE_CASE` for all constants defined in `.ts` files.
+- **AVOID** using camelCase or PascalCase for constant names outside of React components.
+- **RATIONALE**: This is a widely-accepted convention for defining constants and makes them easily distinguishable from other variables.
+
+### Logic in Render
+- **MUST** define elaborated constants and methods before the `return` statement.
+- **AVOID** placing complex logic directly in the render block.
+- **RATIONALE**: This improves readability and separates logic from the view.
+
 <!-- end list -->
+
+```tsx
+// ❌ Incorrect - Logic inside useFormik
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      const { error } = await supabase.auth.signInWithPassword(values);
+      if (error) setError(error);
+      else router.push(PATHS.app);
+      setSubmitting(false);
+    },
+  });
+  // ...
+};
+
+// ✅ Correct - Logic extracted to a separate function
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const onSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    const { error } = await supabase.auth.signInWithPassword(values);
+    if (error) setError(error);
+    else router.push(PATHS.app);
+    setSubmitting(false);
+  };
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit,
+  });
+  // ...
+};
+```
+
+```tsx
+// ❌ Incorrect - clsx call inside JSX
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div
+        className={clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen })}
+      >
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+
+// ✅ Correct - className defined in a constant
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarClassName = clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen });
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div className={sidebarClassName}>
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+```
 
 ```
 // ✅ Correct
@@ -115,6 +205,20 @@ src/
 - **RATIONALE**: This avoids deep nesting and makes components easier to find.
 
 <!-- end list -->
+
+```tsx
+// ✅ Correct
+export const PATHS = {
+  login: '/login',
+  app: '/app',
+};
+
+// ❌ Incorrect
+export const paths = {
+  login: '/login',
+  app: '/app',
+};
+```
 
 ```
 // ✅ Correct (Simple or Complex Component)
@@ -174,6 +278,19 @@ interface UserData {
 3.  **CREATE** new models only when necessary
 4.  **FOLLOW** existing patterns in `src/lib/sdk/models/` as templates
 
+#### `yup` Import Casing
+- **MUST** import `yup` in all lowercase.
+- **RATIONALE**: Ensures consistency across the codebase.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+import * as yup from 'yup';
+
+// ❌ Incorrect
+import * as Yup from 'yup';
+```
+
 ### ⚛️ React & Next.js Standards
 
 #### `use client` Directive
@@ -201,6 +318,51 @@ const MyComponent = ({ prop1, prop2 }: MyComponentProps) => {
 
 // ❌ Avoid FC<> wrapper
 // const MyComponent: FC<MyComponentProps> = ({ prop1, prop2 }) => { ... };
+```
+
+#### Component Export
+- **MUST** use default exports for components.
+- **AVOID** exporting components on the `const` definition line.
+- **RATIONALE**: Enforces a consistent module structure.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+const MyComponent = () => {
+  return <div>Content</div>;
+};
+export default MyComponent;
+
+// ❌ Incorrect
+export const MyComponent = () => {
+  return <div>Content</div>;
+};
+```
+
+#### `PropsWithChildren` Convention
+- **PREFER** using a type alias with `PropsWithChildren` for components that accept `children`.
+- **RATIONALE**: This provides a consistent and extensible pattern for typing components with children.
+
+<!-- end list -->
+```tsx
+// ✅ Correct
+import type { PropsWithChildren } from 'react';
+
+type MyComponentProps = PropsWithChildren<{
+  // other props
+}>;
+
+// ✅ Also correct, for components with only children
+type MySimpleComponentProps = PropsWithChildren<{}>;
+
+const MyComponent = ({ children }: MySimpleComponentProps) => {
+  return <div>{children}</div>;
+};
+
+// ❌ Incorrect - Inline typing
+const MyComponentWithInlineTyping = ({ children }: PropsWithChildren) => {
+  return <div>{children}</div>;
+};
 ```
 
 #### Props Typing
@@ -263,6 +425,63 @@ const MySimpleComponent = ({ children }: MySimpleComponentProps) => {
 
 <!-- end list -->
 
+### Conditional ClassNames
+- **MUST** use a library like `clsx` to handle conditional class names.
+- **AVOID** using ternary operators for conditional classes in JSX.
+- **RATIONALE**: Improves readability and maintainability of complex class logic.
+
+<!-- end list -->
+
+### Layout and Spacing
+- **MUST** use `grid` with `gap` for layout and spacing between elements.
+- **AVOID** using margins (e.g., `mt-4`, `mb-2`) on individual components.
+- **MUST** reset default margins on semantic tags (e.g., `h1`, `p`) by using `m-0`.
+- **RATIONALE**: Using a grid system with gaps provides more consistent and predictable spacing than individual margins, which can sometimes stack or collapse unexpectedly.
+
+<!-- end list -->
+
+```tsx
+// ❌ Incorrect - Using margins
+const MyComponent = () => {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Title</h1>
+      <p className="text-gray-600 mt-2">Some text here.</p>
+      <button className="mt-4">Click me</button>
+    </div>
+  );
+};
+
+// ✅ Correct - Using grid and gap
+const MyComponent = () => {
+  return (
+    <div className="grid gap-2.5">
+      <h1 className="text-2xl font-bold m-0">Title</h1>
+      <p className="text-gray-600 m-0">Some text here.</p>
+      <button>Click me</button>
+    </div>
+  );
+};
+```
+
+```tsx
+// ✅ Correct
+import clsx from 'clsx';
+
+const MyComponent = ({ isActive, isPrimary }) => {
+  const className = clsx('base-class', {
+    'active-class': isActive,
+    'primary-class': isPrimary,
+  });
+  return <div className={className}>...</div>;
+};
+
+// ❌ Incorrect
+const MyComponentWithTernary = ({ isActive, isPrimary }) => {
+  return <div className={`base-class ${isActive ? 'active-class' : ''} ${isPrimary ? 'primary-class' : ''}`}>...</div>;
+};
+```
+
 ```jsx
 // ✅ Preferred
 <span className="font-bold">Important text</span>
@@ -302,6 +521,23 @@ import { fetchUsers } from '@/lib/sdk/fetchers';
 - **MUST** prefer absolute paths using configured aliases (`@/`) for imports outside of the current feature module.
 - **ALLOW** relative paths for imports within the same feature module (e.g., `../helpers`).
 - **AVOID** deep relative paths (`../../../`).
+
+#### Route Management
+- **MUST** use the `paths` object from `src/app/paths.ts` for all internal navigation links.
+- **AVOID** hardcoding route strings directly in components or hooks.
+- **RATIONALE**: Centralizing path definitions makes the codebase easier to maintain and prevents broken links when routes change.
+
+```tsx
+// ✅ Correct
+import { PATHS } from '@/app/paths';
+// ...
+router.push(PATHS.app);
+```
+
+```tsx
+// ❌ Incorrect
+router.push('/app');
+```
 
 ---
 

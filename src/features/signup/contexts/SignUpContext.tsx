@@ -2,7 +2,8 @@
 
 import { createContext, type PropsWithChildren, useState } from 'react';
 import { type AuthError } from '@supabase/supabase-js';
-import { type FormikHelpers, useFormik } from 'formik';
+import { useFormik } from 'formik';
+import { FormikConfig } from 'formik/dist/types';
 
 import { supabase } from '@/lib/supabase/client';
 
@@ -22,11 +23,13 @@ type SignUpContextProps = {
 
 export const SignUpContext = createContext<SignUpContextProps>({} as SignUpContextProps);
 
-export const SignUpProvider = ({ children }: PropsWithChildren) => {
+type SignUpProviderProps = PropsWithChildren;
+
+export const SignUpProvider = ({ children }: SignUpProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
 
-  const handleSubmit = async (values: SignUpFormType, { setSubmitting }: FormikHelpers<SignUpFormType>) => {
+  const onSubmit: FormikConfig<SignUpFormType>['onSubmit'] = async (values, { setSubmitting }) => {
     setIsLoading(true);
     setError(null);
 
@@ -55,7 +58,7 @@ export const SignUpProvider = ({ children }: PropsWithChildren) => {
       confirmPassword: '',
     },
     validationSchema: signUpSchema,
-    onSubmit: handleSubmit,
+    onSubmit,
   });
 
   const contextValue = {

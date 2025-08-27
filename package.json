@@ -14,9 +14,12 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.56.0",
     "@types/yup": "^0.29.14",
+    "clsx": "^2.1.1",
     "formik": "^2.4.6",
+    "lucide-react": "^0.542.0",
     "next": "15.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
