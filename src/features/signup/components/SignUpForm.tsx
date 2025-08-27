@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { SignUpContext } from '@/features/signup/contexts/SignUpContext';
 
-export const SignUpForm = () => {
+const SignUpForm = () => {
   const { formikInstance, isLoading, error } = useContext(SignUpContext);
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } = formikInstance;
 
@@ -90,3 +90,5 @@ export const SignUpForm = () => {
     </div>
   );
 };
+
+export default SignUpForm;
