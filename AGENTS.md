@@ -426,9 +426,9 @@ const MySimpleComponent = ({ children }: MySimpleComponentProps) => {
 <!-- end list -->
 
 ### Conditional ClassNames
-- **MUST** use a library like `clsx` to handle conditional class names.
-- **AVOID** using ternary operators for conditional classes in JSX.
-- **RATIONALE**: Improves readability and maintainability of complex class logic.
+- **MUST** use the `cn` utility from `src/lib/utils.ts` to handle conditional class names. This utility wraps `clsx` and `tailwind-merge` to prevent class name conflicts.
+- **AVOID** using `clsx` directly or using ternary operators for conditional classes in JSX.
+- **RATIONALE**: Ensures proper class merging and avoids style conflicts, improving readability and maintainability of complex class logic.
 
 <!-- end list -->
 
@@ -888,6 +888,24 @@ const MyComponent = () => {
   });
 };
 ```
+
+---
+
+## 🎨 Aceternity UI Component Guidelines
+
+Our UI kit is based on the components and utilities from [Aceternity UI](https://ui.aceternity.com/docs/add-utilities). When integrating new components from this library, the following standards **MUST** be followed.
+
+### Component Integration
+
+1.  **Create a local, forwarded-ref version of the component.** Do not use the library components directly.
+2.  **Place the new component in its own folder within the UI kit directory.**
+    - **MUST**: `@/lib/ui-kit/<component-name>/<ComponentName>.tsx`
+    - **AVOID**: `components/ui/background-gradient.tsx` (the default from some library documentations)
+3.  **Copy the source code from the official documentation.**
+    - To add a component, find its page (e.g., `https://ui.aceternity.com/components/background-gradient`).
+    - The code is located in a section called **Copy the source code**. You may need to click "expand" to view the full code.
+4.  **Format the code** to match our existing guidelines (e.g., tree-shaken React imports, constants and methods defined before the `return` statement, etc.).
+5.  **Implement the new component** where it is necessary.
 
 ---
 
