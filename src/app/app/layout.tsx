@@ -51,7 +51,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <div className="px-4 py-2 mb-8">
               <Link href="/app" className="flex items-center gap-2">
                 <Home className="h-6 w-6 text-indigo-600" />
-                <h1 className="text-xl font-bold text-indigo-600">
+                <h1 className="text-xl font-bold text-indigo-600 m-0">
                   My App
                 </h1>
               </Link>
@@ -73,8 +73,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="flex flex-col flex-1">
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      <div className="flex flex-col flex-1 p-4">
+        <main className="flex-1 p-6 overflow-y-auto bg-white dark:bg-neutral-800 rounded-lg shadow-md">{children}</main>
       </div>
     </div>
   );

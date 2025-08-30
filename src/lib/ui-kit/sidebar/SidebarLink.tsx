@@ -23,7 +23,7 @@ const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {
 
   const commonProps = {
     className: cn(
-      "flex items-center justify-start gap-2 group/sidebar py-2",
+      "flex items-center justify-start gap-2 group/sidebar py-2 text-neutral-700 dark:text-neutral-200",
       className
     ),
     ...props,
