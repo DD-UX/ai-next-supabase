@@ -1,7 +1,9 @@
 'use client';
 
 import { useContext } from 'react';
+
 import { SignUpContext } from '@/features/signup/contexts/SignUpContext';
+
 import Button from '@/lib/ui-kit/Button/Button';
 import FormControl from '@/lib/ui-kit/FormControl/FormControl';
 

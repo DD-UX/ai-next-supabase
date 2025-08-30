@@ -353,7 +353,7 @@ type MyComponentProps = PropsWithChildren<{
 }>;
 
 // ✅ Also correct, for components with only children
-type MySimpleComponentProps = PropsWithChildren<{}>;
+type MySimpleComponentProps = PropsWithChildren
 
 const MyComponent = ({ children }: MySimpleComponentProps) => {
   return <div>{children}</div>;

@@ -2,6 +2,7 @@
 
 import { type ComponentProps } from "react";
 import { motion } from "framer-motion";
+
 import DesktopSidebar from "./DesktopSidebar";
 import MobileSidebar from "./MobileSidebar";
 

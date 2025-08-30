@@ -16,7 +16,7 @@ type LoginFormType = {
   password: string;
 };
 
-type LoginContextProps = {
+export type LoginContextProps = {
   formikInstance: ReturnType<typeof useFormik<LoginFormType>>;
   isLoading: boolean;
   error: Error | null;

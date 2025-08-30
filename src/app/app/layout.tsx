@@ -2,20 +2,14 @@
 
 import { type PropsWithChildren } from 'react';
 import { useRouter } from 'next/navigation';
+import { Home, LayoutDashboard, LogOut, Settings, User } from 'lucide-react';
+
 import { supabase } from '@/lib/supabase/client';
 import Sidebar from '@/lib/ui-kit/sidebar/Sidebar';
 import SidebarBody from '@/lib/ui-kit/sidebar/SidebarBody';
 import SidebarLink from '@/lib/ui-kit/sidebar/SidebarLink';
-import {
-  LayoutDashboard,
-  User,
-  Settings,
-  LogOut,
-  Home,
-} from 'lucide-react';
-import Link from 'next/link';
 
-type AppLayoutProps = PropsWithChildren<{}>;
+type AppLayoutProps = PropsWithChildren;
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const router = useRouter();
@@ -68,7 +62,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 href: '#', // href is required but we use onClick
                 icon: <LogOut className="h-4 w-4" />,
               }}
-              onClick={handleLogout}
+              onClick={() => {
+                handleLogout().catch((error) => {
+                  console.error('Logout failed:', error);
+                });
+              }}
               className="cursor-pointer"
             />
           </div>

@@ -1,5 +1,5 @@
-import { LoginProvider } from '@/features/login/contexts/LoginContext';
 import LoginForm from '@/features/login/components/LoginForm';
+import { LoginProvider } from '@/features/login/contexts/LoginContext';
 
 const LoginPage = () => {
   return (

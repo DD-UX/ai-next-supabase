@@ -2,7 +2,9 @@
 
 import { type ComponentProps } from "react";
 import { motion } from "framer-motion";
+
 import { cn } from "@/lib/utils";
+
 import { useSidebar } from "./SidebarContext";
 
 const DesktopSidebar = ({

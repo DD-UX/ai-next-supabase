@@ -3,7 +3,9 @@
 import { type ComponentProps, type PropsWithChildren } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+
 import { cn } from "@/lib/utils";
+
 import { useSidebar } from "./SidebarContext";
 
 type MobileSidebarProps = PropsWithChildren<ComponentProps<"div">>;

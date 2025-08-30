@@ -15,7 +15,7 @@ type SignUpFormType = {
   confirmPassword: string;
 };
 
-type SignUpContextProps = {
+export type SignUpContextProps = {
   formikInstance: ReturnType<typeof useFormik<SignUpFormType>>;
   isLoading: boolean;
   error: AuthError | null;
