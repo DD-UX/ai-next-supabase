@@ -318,7 +318,7 @@ type MyComponentProps = PropsWithChildren<{
 }>;
 
 // ✅ Also correct, for components with only children
-type MySimpleComponentProps = PropsWithChildren<{}>;
+type MySimpleComponentProps = PropsWithChildren
 
 const MyComponent = ({ children }: MySimpleComponentProps) => {
   return <div>{children}</div>;
@@ -364,9 +364,9 @@ const Button = ({ label, onClick, disabled = false }: ButtonProps) => {
 <!-- end list -->
 
 ### Conditional ClassNames
-- **MUST** use a library like `clsx` to handle conditional class names.
-- **AVOID** using ternary operators for conditional classes in JSX.
-- **RATIONALE**: Improves readability and maintainability of complex class logic.
+- **MUST** use the `cn` utility from `src/lib/utils.ts` to handle conditional class names. This utility wraps `clsx` and `tailwind-merge` to prevent class name conflicts.
+- **AVOID** using `clsx` directly or using ternary operators for conditional classes in JSX.
+- **RATIONALE**: Ensures proper class merging and avoids style conflicts, improving readability and maintainability of complex class logic.
 
 <!-- end list -->
 
@@ -829,6 +829,24 @@ const MyComponent = () => {
 
 ---
 
+## 🎨 Aceternity UI Component Guidelines
+
+Our UI kit is based on the components and utilities from [Aceternity UI](https://ui.aceternity.com/docs/add-utilities). When integrating new components from this library, the following standards **MUST** be followed.
+
+### Component Integration
+
+1.  **Create a local, forwarded-ref version of the component.** Do not use the library components directly.
+2.  **Place the new component in its own folder within the UI kit directory.**
+    - **MUST**: `@/lib/ui-kit/<component-name>/<ComponentName>.tsx`
+    - **AVOID**: `components/ui/background-gradient.tsx` (the default from some library documentations)
+3.  **Copy the source code from the official documentation.**
+    - To add a component, find its page (e.g., `https://ui.aceternity.com/components/background-gradient`).
+    - The code is located in a section called **Copy the source code**. You may need to click "expand" to view the full code.
+4.  **Format the code** to match our existing guidelines (e.g., tree-shaken React imports, constants and methods defined before the `return` statement, etc.).
+5.  **Implement the new component** where it is necessary.
+
+---
+
 ## 🔗 Key Architectural Patterns
 
 ### Component Patterns
@@ -871,19 +889,44 @@ const MyComponent = () => {
 
 ## ✅ Code Review Checklist
 
-Before submitting any AI-generated code, ensure:
+Before submitting any AI-generated code, ensure it adheres to all project guidelines:
 
-- [ ] **Non-regression**: Only requested changes made, no unintended refactors
-- [ ] **TypeScript**: Uses `type` instead of `interface` where applicable
-- [ ] **React imports**: `"use client"` directive present where needed
-- [ ] **Component syntax**: Uses arrow function syntax
-- [ ] **Props typing**: Follows `ComponentNameProps` convention
-- [ ] **Import paths**: Uses absolute paths with configured aliases
-- [ ] **Styling**: Uses Tailwind classes for styling, not deprecated HTML tags
-- [ ] **Types**: Checked existing models in `src/lib/sdk/models/`
-- [ ] **Output**: Code is complete and ready to use
-- [ ] **Testing**: Tests added for new functionality
-- [ ] **Functionality**: Existing features work exactly as before
+### 📜 General
+- [ ] **Non-regression**: Only requested changes made, no unintended refactors.
+- [ ] **Functionality**: Existing features work exactly as before.
+- [ ] **Testing**: New tests added for new functionality, and all existing tests pass.
+- [ ] **Output**: Code is complete, ready to use, and all parts of the request have been addressed.
+
+### 📁 File & Directory Structure
+- [ ] **File Naming**: Helpers and constants files are correctly suffixed (`-helpers.ts`, `-constants.ts`).
+- [ ] **Component Structure**: Follows the feature-based flat structure, unless otherwise specified (e.g., Aceternity UI components).
+
+### ✍️ Naming & Conventions
+- [ ] **Constants**: Use `UPPER_SNAKE_CASE` for all constants.
+- [ ] **`yup` Imports**: `yup` is imported in all lowercase (`import * as yup from 'yup'`).
+- [ ] **Route Management**: Internal navigation uses the `PATHS` object from `src/app/paths.ts`.
+
+### ⚛️ React & TypeScript
+- [ ] **TypeScript Types**: `type` is preferred over `interface`. Existing SDK models are reused where possible.
+- [ ] **Component Definition**: Uses arrow function syntax, not `function` declarations or `FC`.
+- [ ] **Component Export**: Uses default exports on a separate line.
+- [ ] **Props Typing**: Follows the `<ComponentName>Props` convention and types are applied directly to destructured props.
+- [ ] **`PropsWithChildren`**: Uses the `type` alias convention.
+- [ ] **`"use client"` Directive**: Present at the top of all components using client-side hooks or state.
+- [ ] **Logic in Render**: Complex logic, constants, and calculations are defined before the `return` statement.
+- [ ] **Import Strategy**: Uses individual, tree-shaken imports. `React` is not imported unless necessary.
+- [ ] **Import Paths**: Prefers absolute paths (`@/`) over deep relative paths.
+
+### 🎨 Styling & UI
+- [ ] **Conditional ClassNames**: Uses the `cn()` utility from `src/lib/utils.ts`, not `clsx` directly or ternary operators.
+- [ ] **Layout & Spacing**: Uses `grid` with `gap` for spacing. Avoids individual margins on components and resets them on semantic tags (`m-0`).
+- [ ] **Text Formatting**: Uses Tailwind utility classes (`font-bold`) instead of semantic tags (`<b>`, `<strong>`) for styling.
+- [ ] **Aceternity UI**: If adding a new component, it follows all rules in the "Aceternity UI Component Guidelines" section.
+
+### 📋 Forms
+- [ ] **Formik**: All new forms use Formik for state management.
+- [ ] **Form Context**: Follows the Form Context provider pattern.
+- [ ] **Context Usage**: Uses `useContext` directly, without unnecessary custom hook wrappers.
 
 ---
 

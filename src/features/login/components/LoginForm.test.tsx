@@ -1,22 +1,24 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { LoginContext } from '@/features/login/contexts/LoginContext';
+
 import LoginForm from '@/features/login/components/LoginForm';
+import { LoginContext, LoginContextProps } from '@/features/login/contexts/LoginContext';
 
-const getMockFormik = (isLoading = false, error: Error | null = null) => ({
-  formikInstance: {
-    values: { email: '', password: '' },
-    errors: {},
-    touched: {},
-    handleChange: jest.fn(),
-    handleBlur: jest.fn(),
-    handleSubmit: jest.fn(),
-  },
-  isLoading,
-  error,
-});
+const getMockFormik = (isLoading = false, error: Error | null = null) =>
+  ({
+    formikInstance: {
+      values: { email: '', password: '' },
+      errors: {},
+      touched: {},
+      handleChange: jest.fn(),
+      handleBlur: jest.fn(),
+      handleSubmit: jest.fn(),
+    },
+    isLoading,
+    error,
+  }) as unknown as LoginContextProps;
 
-const renderLoginForm = (mockContext) => {
+const renderLoginForm = (mockContext: LoginContextProps) => {
   return render(
     <LoginContext.Provider value={mockContext}>
       <LoginForm />
