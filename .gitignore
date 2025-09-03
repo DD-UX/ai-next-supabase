@@ -45,3 +45,6 @@ next-env.d.ts
 /.idea/prettier.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+
+/jules-scratch/*
+/.swc/*
