@@ -7,7 +7,6 @@ import { supabase } from '@/lib/supabase/client';
 
 import { SignUpContext, SignUpProvider } from './SignUpContext';
 
-
 // Mock the dependencies
 jest.mock('@/features/signup/helpers/signup-validation-helpers', () => ({
   getValidationSchema: () => yup.object().shape({}),

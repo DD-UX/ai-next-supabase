@@ -1,6 +1,6 @@
 'use client';
 
-import { type ButtonHTMLAttributes,forwardRef } from 'react';
+import { type ButtonHTMLAttributes, forwardRef } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;

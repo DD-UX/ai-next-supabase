@@ -1,6 +1,6 @@
 'use client';
 
-import { type PropsWithChildren,type ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode } from 'react';
 
 type FormControlProps = PropsWithChildren<{
   label: string;

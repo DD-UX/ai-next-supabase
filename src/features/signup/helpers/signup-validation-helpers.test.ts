@@ -31,17 +31,23 @@ describe('signUpSchema', () => {
 
     it('should fail if password has no letter', async () => {
       const invalidData = { ...validData, password: '12345678!', confirmPassword: '12345678!' };
-      await expect(signUpSchema.validate(invalidData)).rejects.toThrow('Password must be alphanumeric and contain at least one special character.');
+      await expect(signUpSchema.validate(invalidData)).rejects.toThrow(
+        'Password must be alphanumeric and contain at least one special character.',
+      );
     });
 
     it('should fail if password has no number', async () => {
       const invalidData = { ...validData, password: 'Password!', confirmPassword: 'Password!' };
-      await expect(signUpSchema.validate(invalidData)).rejects.toThrow('Password must be alphanumeric and contain at least one special character.');
+      await expect(signUpSchema.validate(invalidData)).rejects.toThrow(
+        'Password must be alphanumeric and contain at least one special character.',
+      );
     });
 
     it('should fail if password has no special character', async () => {
       const invalidData = { ...validData, password: 'Password123', confirmPassword: 'Password123' };
-      await expect(signUpSchema.validate(invalidData)).rejects.toThrow('Password must be alphanumeric and contain at least one special character.');
+      await expect(signUpSchema.validate(invalidData)).rejects.toThrow(
+        'Password must be alphanumeric and contain at least one special character.',
+      );
     });
   });
 

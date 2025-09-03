@@ -17,7 +17,7 @@ type Links = {
 type SidebarLinkProps = {
   link: Links;
   className?: string;
-  onClick?:  MouseEventHandler<HTMLAnchorElement>;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {

@@ -16,11 +16,7 @@ const SignUpForm = () => {
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-900 m-0">Create your account</h2>
         <form onSubmit={handleSubmit} className="grid gap-6">
-          <FormControl
-            htmlFor="email"
-            label="Email address"
-            error={touched.email && errors.email}
-          >
+          <FormControl htmlFor="email" label="Email address" error={touched.email && errors.email}>
             <input
               id="email"
               name="email"
@@ -34,11 +30,7 @@ const SignUpForm = () => {
               disabled={isLoading}
             />
           </FormControl>
-          <FormControl
-            htmlFor="password"
-            label="Password"
-            error={touched.password && errors.password}
-          >
+          <FormControl htmlFor="password" label="Password" error={touched.password && errors.password}>
             <input
               id="password"
               name="password"
