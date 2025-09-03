@@ -46,5 +46,6 @@ next-env.d.ts
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
 
-/jules-scratch/*
-/.swc/*
+# Local build outputs and IDE configurations
+jules-scratch/
+.swc/
