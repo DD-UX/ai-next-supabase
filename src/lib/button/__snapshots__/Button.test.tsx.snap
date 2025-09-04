@@ -1,0 +1,325 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Button Component applies the correct classes for each variant via snapshots: error 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Error
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button Component applies the correct classes for each variant via snapshots: link 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed text-indigo-600 underline-offset-4 hover:underline focus-visible:ring-indigo-500"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Link
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button Component applies the correct classes for each variant via snapshots: primary 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Primary
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button Component applies the correct classes for each variant via snapshots: secondary 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed border border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 focus-visible:ring-slate-400"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Secondary
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button Component applies the correct classes for each variant via snapshots: success 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Success
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button Component applies the correct classes for each variant via snapshots: warning 1`] = `
+<DocumentFragment>
+  <button
+    class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-amber-500 text-white hover:bg-amber-600 focus-visible:ring-amber-500"
+  >
+    <div
+      class="flex items-center gap-2"
+    >
+      <svg
+        class="loader"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 9 9"
+        />
+      </svg>
+      <svg
+        class="check"
+        fill="none"
+        height="20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="20"
+      >
+        <path
+          d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+        />
+        <path
+          d="M9 12l2 2l4 -4"
+        />
+      </svg>
+      <span>
+        Warning
+      </span>
+      <span
+        aria-atomic="true"
+        aria-live="polite"
+        class="sr-only"
+      />
+    </div>
+  </button>
+</DocumentFragment>
+`;
