@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import '@testing-library/jest-dom';
 
-import Button from './Button';
+import Button, { ButtonVariants } from './Button';
 
 // This is a comprehensive, type-safe mock for the 'motion/react' library.
 // It is designed to pass a strict ESLint configuration.
@@ -18,6 +18,7 @@ jest.mock('motion/react', () => {
     animate?: unknown;
     initial?: unknown;
     transition?: unknown;
+    whileTap?: unknown;
   };
 
   // A generic factory for creating mocked motion components (e.g., motion.div).
@@ -25,7 +26,7 @@ jest.mock('motion/react', () => {
     const Mock = forwardRef<HTMLElement, JSX.IntrinsicElements[T] & MotionProps>((props, ref) => {
       // these props are omitted from otherProps intentionally
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, layout, animate, initial, transition, ...otherProps } = props;
+      const { children, layout, animate, initial, transition, whileTap, ...otherProps } = props;
       // Filter out motion props and pass only valid HTML props
       return createElement(Tag as string, { ref, ...otherProps }, children);
     });
@@ -55,22 +56,22 @@ describe('button-legacy Component', () => {
   });
 
   it('applies the correct classes for each variant via snapshots', () => {
-    const { rerender, asFragment } = render(<Button variant="primary">Primary</Button>);
+    const { rerender, asFragment } = render(<Button variant={ButtonVariants.PRIMARY}>Primary</Button>);
     expect(asFragment()).toMatchSnapshot('primary');
 
-    rerender(<Button variant="secondary">Secondary</Button>);
+    rerender(<Button variant={ButtonVariants.SECONDARY}>Secondary</Button>);
     expect(asFragment()).toMatchSnapshot('secondary');
 
-    rerender(<Button variant="link">Link</Button>);
+    rerender(<Button variant={ButtonVariants.LINK}>Link</Button>);
     expect(asFragment()).toMatchSnapshot('link');
 
-    rerender(<Button variant="success">Success</Button>);
+    rerender(<Button variant={ButtonVariants.SUCCESS}>Success</Button>);
     expect(asFragment()).toMatchSnapshot('success');
 
-    rerender(<Button variant="warning">Warning</Button>);
+    rerender(<Button variant={ButtonVariants.WARNING}>Warning</Button>);
     expect(asFragment()).toMatchSnapshot('warning');
 
-    rerender(<Button variant="error">Error</Button>);
+    rerender(<Button variant={ButtonVariants.ERROR}>Error</Button>);
     expect(asFragment()).toMatchSnapshot('error');
   });
 
