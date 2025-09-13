@@ -33,16 +33,19 @@ type ButtonProps = PropsWithChildren<
 
 // Style configuration for button variants
 const baseClasses =
-  'flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium ring-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed';
+  'flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 font-medium ring-offset-2 transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed';
 
 const variantClasses = {
-  [ButtonVariants.PRIMARY]: 'bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500',
+  [ButtonVariants.PRIMARY]: 'bg-indigo-600 text-white hover:ring-2 hover:ring-indigo-600 focus-visible:ring-indigo-600',
   [ButtonVariants.SECONDARY]:
-    'border border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 focus-visible:ring-slate-400',
+    'border border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 hover:ring-2 hover:ring-slate-100 focus-visible:ring-slate-400',
   [ButtonVariants.LINK]: 'text-indigo-600 underline-offset-4 hover:underline focus-visible:ring-indigo-500',
-  [ButtonVariants.SUCCESS]: 'bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500',
-  [ButtonVariants.WARNING]: 'bg-amber-500 text-white hover:bg-amber-600 focus-visible:ring-amber-500',
-  [ButtonVariants.ERROR]: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500',
+  [ButtonVariants.SUCCESS]:
+    'bg-green-700 text-white hover:bg-green-800 hover:ring-2 hover:ring-green-800 focus-visible:ring-green-700',
+  [ButtonVariants.WARNING]:
+    'bg-amber-500 text-white hover:bg-amber-600 hover:ring-2 hover:ring-amber-600 focus-visible:ring-amber-500',
+  [ButtonVariants.ERROR]:
+    'bg-red-600 text-white hover:bg-red-700 hover:ring-2 hover:ring-red-700 focus-visible:ring-red-500',
 };
 
 // Disabled state styles - consistent across all variants
