@@ -1,6 +1,7 @@
+import { createElement, createRef, forwardRef, Fragment, JSX, ReactNode } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import '@testing-library/jest-dom';
-import React from 'react';
 
 import Button from './Button';
 
@@ -8,34 +9,28 @@ import Button from './Button';
 // It is designed to pass a strict ESLint configuration.
 jest.mock('motion/react', () => {
   // We must use require here as jest.mock is hoisted above imports.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const React = require('react');
 
-  // Define a type for the motion-specific props we want to filter out.
-  interface MockMotionProps {
-    children?: React.ReactNode;
+  // const React = require('react') as typeof import('react');
+
+  // Motion-specific props that should be filtered out
+  type MotionProps = {
     layout?: unknown;
     animate?: unknown;
     initial?: unknown;
     transition?: unknown;
-  }
+  };
 
   // A generic factory for creating mocked motion components (e.g., motion.div).
-  const createMock = (Tag: keyof JSX.IntrinsicElements) => {
-    const Mock = React.forwardRef<HTMLElement, MockMotionProps>((props, ref) => {
-      // Rename the motion props with a leading underscore to satisfy the 'no-unused-vars' rule.
-      const {
-        children,
-        layout: _layout,
-        animate: _animate,
-        initial: _initial,
-        transition: _transition,
-        ...rest
-      } = props;
-      return React.createElement(Tag, { ...rest, ref }, children);
+  const createMock = <T extends keyof JSX.IntrinsicElements>(Tag: T) => {
+    const Mock = forwardRef<HTMLElement, JSX.IntrinsicElements[T] & MotionProps>((props, ref) => {
+      // these props are omitted from otherProps intentionally
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { children, layout, animate, initial, transition, ...otherProps } = props;
+      // Filter out motion props and pass only valid HTML props
+      return createElement(Tag as string, { ref, ...otherProps }, children);
     });
 
-    Mock.displayName = `MockMotion(${Tag})`;
+    Mock.displayName = `MockMotion(${String(Tag)})`;
     return Mock;
   };
 
@@ -48,25 +43,19 @@ jest.mock('motion/react', () => {
       span: createMock('span'),
       svg: createMock('svg'),
     },
-    useAnimate: () => [
-      React.createRef<HTMLButtonElement>(),
-      jest.fn().mockResolvedValue(undefined),
-    ],
-    AnimatePresence: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
+    useAnimate: () => [createRef<HTMLButtonElement>(), jest.fn().mockResolvedValue(undefined)] as const,
+    AnimatePresence: ({ children }: { children: ReactNode }) => createElement(Fragment, null, children),
   };
 });
 
-describe('Button Component', () => {
+describe('button-legacy Component', () => {
   it('renders with correct text', () => {
     render(<Button>Click Me</Button>);
     expect(screen.getByText('Click Me')).toBeInTheDocument();
   });
 
   it('applies the correct classes for each variant via snapshots', () => {
-    const { rerender, asFragment } = render(
-      <Button variant="primary">Primary</Button>,
-    );
+    const { rerender, asFragment } = render(<Button variant="primary">Primary</Button>);
     expect(asFragment()).toMatchSnapshot('primary');
 
     rerender(<Button variant="secondary">Secondary</Button>);
@@ -85,12 +74,18 @@ describe('Button Component', () => {
     expect(asFragment()).toMatchSnapshot('error');
   });
 
-  it('calls onClick handler when clicked', () => {
+  it('calls onClick handler when clicked', async () => {
     const mockOnClick = jest.fn();
     render(<Button onClick={mockOnClick}>Click Me</Button>);
     const button = screen.getByRole('button');
-    fireEvent.click(button);
-    expect(mockOnClick).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    await waitFor(() => {
+      expect(mockOnClick).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('is disabled when the disabled prop is true', () => {
@@ -102,7 +97,9 @@ describe('Button Component', () => {
     );
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
-    fireEvent.click(button);
+    act(() => {
+      fireEvent.click(button);
+    });
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 
@@ -113,7 +110,9 @@ describe('Button Component', () => {
     const button = screen.getByRole('button');
 
     expect(button).not.toBeDisabled();
-    fireEvent.click(button);
+    act(() => {
+      fireEvent.click(button);
+    });
 
     await waitFor(() => {
       expect(button).toBeDisabled();
@@ -124,14 +123,12 @@ describe('Button Component', () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Action completed successfully.'),
-      ).toBeInTheDocument();
+      expect(screen.getByText('Action completed successfully.')).toBeInTheDocument();
     });
 
     expect(button).toBeDisabled();
 
-    await act(async () => {
+    act(() => {
       jest.advanceTimersByTime(2200);
     });
 
@@ -140,18 +137,36 @@ describe('Button Component', () => {
     jest.useRealTimers();
   });
 
-  it('does not show loading/success states if onClick is not provided', () => {
+  it('shows loading and success states even if onClick is not provided', async () => {
+    jest.useFakeTimers();
     render(<Button>No Action</Button>);
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+
+    expect(button).not.toBeDisabled();
+    act(() => {
+      fireEvent.click(button);
+    });
+
+    await waitFor(() => {
+      expect(button).toBeDisabled();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Loading, please wait.')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Action completed successfully.')).toBeInTheDocument();
+    });
+
+    expect(button).toBeDisabled();
+
+    act(() => {
+      jest.advanceTimersByTime(2200);
+    });
 
     expect(button).not.toBeDisabled();
 
-    expect(
-      screen.queryByText('Loading, please wait.'),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('Action completed successfully.'),
-    ).not.toBeInTheDocument();
+    jest.useRealTimers();
   });
 });

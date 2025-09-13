@@ -1,5 +1,6 @@
 import { type PropsWithChildren, useContext } from 'react';
 import { useRouter } from 'next/navigation';
+import { type AuthError } from '@supabase/supabase-js';
 import { act, renderHook } from '@testing-library/react';
 import * as yup from 'yup';
 
@@ -26,16 +27,33 @@ jest.mock('next/navigation', () => ({
 
 const mockUseRouter = jest.mocked(useRouter);
 
+type MockSignUpResponse = {
+  data: { user: null; session: null };
+  error: AuthError | null;
+};
+
 describe('SignUpProvider', () => {
   let mockPush: jest.Mock;
-  let mockSignUp: jest.Mock;
+  let mockSignUp: jest.SpyInstance;
   let alertSpy: jest.SpyInstance;
 
   beforeEach(() => {
     alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
     mockPush = jest.fn();
-    mockUseRouter.mockReturnValue({ push: mockPush });
-    mockSignUp = jest.spyOn(supabase.auth, 'signUp').mockImplementation(() => Promise.resolve({ error: null }));
+    mockUseRouter.mockReturnValue({ 
+      push: mockPush,
+      back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn()
+    });
+    mockSignUp = jest.spyOn(supabase.auth, 'signUp').mockImplementation((): Promise<MockSignUpResponse> =>
+      Promise.resolve({
+        data: { user: null, session: null },
+        error: null,
+      })
+    );
   });
 
   afterEach(() => {
@@ -46,7 +64,10 @@ describe('SignUpProvider', () => {
   const wrapper = ({ children }: PropsWithChildren) => <SignUpProvider>{children}</SignUpProvider>;
 
   it('should handle successful sign-up and call alert', async () => {
-    mockSignUp.mockResolvedValueOnce({ error: null });
+    mockSignUp.mockResolvedValueOnce({
+      data: { user: null, session: null },
+      error: null,
+    });
 
     const { result } = renderHook(() => useContext(SignUpContext), { wrapper });
 
@@ -64,8 +85,11 @@ describe('SignUpProvider', () => {
   });
 
   it('should handle sign-up failure and set error state', async () => {
-    const signUpError = new Error('Sign-up failed');
-    mockSignUp.mockResolvedValueOnce({ error: signUpError });
+    const signUpError = new Error('Sign-up failed') as AuthError;
+    mockSignUp.mockResolvedValueOnce({
+      data: { user: null, session: null },
+      error: signUpError,
+    });
 
     const { result } = renderHook(() => useContext(SignUpContext), { wrapper });
 
