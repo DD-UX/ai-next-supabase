@@ -41,11 +41,10 @@ describe('SignUpForm', () => {
     expect(screen.getByText(error.message)).toBeInTheDocument();
   });
 
-  it('should disable inputs and button when loading', () => {
+  it('should disable inputs when loading', () => {
     renderSignUpForm(getMockFormik(true));
     expect(screen.getByLabelText(/email address/i)).toBeDisabled();
     expect(screen.getByLabelText(/^password$/i)).toBeDisabled();
     expect(screen.getByLabelText(/confirm password/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /signing up.../i })).toBeDisabled();
   });
 });

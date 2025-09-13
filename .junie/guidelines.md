@@ -2,6 +2,8 @@
 
 This file provides comprehensive guidance for JetBrains Junie, Google Jules, and other AI-assisted development tools when working with the AI Next Supabase codebase.
 
+**Note:** This file is mirrored at `.github/copilot-guidelines.md` and `AGENTS.md`. Any changes made to one file **must** be duplicated in the other.
+
 ---
 
 ## 🚀 Quick Start Commands
@@ -95,9 +97,138 @@ src/
 └── __mocks__/         # Jest mocks
 ```
 
+### File Naming Conventions
+
+- **MUST** suffix constants files with `-constants.ts`.
+- **MUST** suffix helper files with `-helpers.ts`.
+- **RATIONALE**: This provides a consistent naming scheme across the codebase, making it easier to identify the purpose of files at a glance.
+
+### Constants Naming Convention
+- **MUST** use `UPPER_SNAKE_CASE` for all constants defined in `.ts` files.
+- **AVOID** using camelCase or PascalCase for constant names outside of React components.
+- **RATIONALE**: This is a widely-accepted convention for defining constants and makes them easily distinguishable from other variables.
+
+### Logic in Render
+- **MUST** define elaborated constants and methods before the `return` statement.
+- **AVOID** placing complex logic directly in the render block.
+- **RATIONALE**: This improves readability and separates logic from the view.
+
+<!-- end list -->
+
+```tsx
+// ❌ Incorrect - Logic inside useFormik
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      const { error } = await supabase.auth.signInWithPassword(values);
+      if (error) setError(error);
+      else router.push(PATHS.app);
+      setSubmitting(false);
+    },
+  });
+  // ...
+};
+
+// ✅ Correct - Logic extracted to a separate function
+export const LoginProvider = ({ children }: LoginProviderProps) => {
+  const [error, setError] = useState<Error | null>(null);
+  const router = useRouter();
+
+  const onSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    const { error } = await supabase.auth.signInWithPassword(values);
+    if (error) setError(error);
+    else router.push(PATHS.app);
+    setSubmitting(false);
+  };
+
+  const formikInstance = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: getValidationSchema(),
+    onSubmit,
+  });
+  // ...
+};
+```
+
+```tsx
+// ❌ Incorrect - clsx call inside JSX
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div
+        className={clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen })}
+      >
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+
+// ✅ Correct - className defined in a constant
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarClassName = clsx('fixed...', { 'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen });
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <div className={sidebarClassName}>
+        ...
+      </div>
+      ...
+    </div>
+  );
+};
+```
+
+```tsx
+// ✅ Correct
+export const PATHS = {
+  login: '/login',
+  app: '/app',
+};
+
+// ❌ Incorrect
+export const paths = {
+  login: '/login',
+  app: '/app',
+};
+```
+
+```tsx
+// ✅ Correct
+const MyComponent = ({ prop1, prop2 }: MyComponentProps) => {
+  return <div>Content</div>;
+};
+
+// ❌ Avoid FC<> wrapper
+// const MyComponent: FC<MyComponentProps> = ({ prop1, prop2 }) => { ... };
+```
+
+```
+// ✅ Correct
+├── constants/
+│   └── signup-constants.ts
+├── helpers/
+│   └── validation-helpers.ts
+```
+
 ### Component Structure Convention
 
-Follow the established folder-per-component pattern within each feature's `components` directory:
+- **MUST** keep a flat structure for components within the `components` directory of a feature.
+- **AVOID** creating a separate folder for each component, even if they are related. A folder should only be used to group a component and its dedicated, non-reusable child components.
+- **RATIONALE**: This avoids deep nesting and makes components easier to find.
+
+<!-- end list -->
 
 ```
 ComponentName/
@@ -921,6 +1052,7 @@ Before submitting any AI-generated code, ensure it adheres to all project guidel
 - [ ] **Conditional ClassNames**: Uses the `cn()` utility from `src/lib/utils.ts`, not `clsx` directly or ternary operators.
 - [ ] **Layout & Spacing**: Uses `grid` with `gap` for spacing. Avoids individual margins on components and resets them on semantic tags (`m-0`).
 - [ ] **Text Formatting**: Uses Tailwind utility classes (`font-bold`) instead of semantic tags (`<b>`, `<strong>`) for styling.
+- [ ] **Enum Definitions**: UI kit components use enums for all variants, states, and configurable options with proper exports and usage throughout the component.
 - [ ] **Aceternity UI**: If adding a new component, it follows all rules in the "Aceternity UI Component Guidelines" section.
 
 ### 📋 Forms

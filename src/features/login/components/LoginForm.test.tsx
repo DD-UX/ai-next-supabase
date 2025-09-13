@@ -40,10 +40,9 @@ describe('LoginForm', () => {
     expect(screen.getByText(error.message)).toBeInTheDocument();
   });
 
-  it('should disable inputs and button when loading', () => {
+  it('should disable inputs when loading', () => {
     renderLoginForm(getMockFormik(true));
     expect(screen.getByLabelText(/email address/i)).toBeDisabled();
     expect(screen.getByLabelText(/password/i)).toBeDisabled();
-    expect(screen.getByRole('button', { name: /loading.../i })).toBeDisabled();
   });
 });

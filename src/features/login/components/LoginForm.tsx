@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { LoginContext } from '@/features/login/contexts/LoginContext';
 
-import Button from '@/lib/ui-kit/Button/Button';
+import Button, { ButtonVariants } from '@/lib/ui-kit/button/Button';
 import FormControl from '@/lib/ui-kit/FormControl/FormControl';
 
 const LoginForm = () => {
@@ -46,7 +46,7 @@ const LoginForm = () => {
           </FormControl>
           {error && <div className="text-sm font-medium text-red-600 m-0">{error.message}</div>}
           <div>
-            <Button type="submit" isLoading={isLoading}>
+            <Button variant={ButtonVariants.PRIMARY} full>
               Sign In
             </Button>
           </div>

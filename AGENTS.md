@@ -2,7 +2,7 @@
 
 This file provides comprehensive guidance for JetBrains Junie, Google Jules, and other AI-assisted development tools when working with the AI Next Supabase codebase.
 
-**Note:** This file is mirrored at `.github/guidelines.md`. Any changes made to one file **must** be duplicated in the other.
+**Note:** This file is mirrored at `.github/copilot-guidelines.md` and `.junie/guidelines.md`. Any changes made to one file **must** be duplicated in the other.
 
 ---
 
@@ -907,6 +907,45 @@ Our UI kit is based on the components and utilities from [Aceternity UI](https:/
 4.  **Format the code** to match our existing guidelines (e.g., tree-shaken React imports, constants and methods defined before the `return` statement, etc.).
 5.  **Implement the new component** where it is necessary.
 
+### UI Kit Component Enum Pattern
+
+When creating UI kit components, **MUST** use enums for all constants that handle states, variants, and any configurable options:
+
+1.  **Create enums for all constant values** - variants, states, sizes, etc.
+2.  **Export enums from the component** - make them available for external use
+3.  **Use enum values throughout the component** - replace all string literals with enum references
+4.  **Update tests to use enums** - import and use enum values in all test files
+
+**Example Implementation:**
+
+```tsx
+// ✅ GOOD - Using enums for variants and states
+export enum ButtonVariants {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
+export enum ButtonStatus {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  SUCCESS = 'success',
+}
+
+const Button = ({ variant = ButtonVariants.PRIMARY, ...props }) => {
+  const [status, setStatus] = useState<ButtonStatus>(ButtonStatus.IDLE);
+  // Use enum values throughout the component
+  return <button className={variantClasses[variant]} />;
+};
+```
+
+**Benefits:**
+- **Type Safety**: Prevents typos and invalid values
+- **Intellisense**: IDE autocomplete for all available options  
+- **Maintainability**: Centralized constant definitions
+- **Professional API**: Clear, documented component interfaces
+
 ---
 
 ## 🔗 Key Architectural Patterns
@@ -983,6 +1022,7 @@ Before submitting any AI-generated code, ensure it adheres to all project guidel
 - [ ] **Conditional ClassNames**: Uses the `cn()` utility from `src/lib/utils.ts`, not `clsx` directly or ternary operators.
 - [ ] **Layout & Spacing**: Uses `grid` with `gap` for spacing. Avoids individual margins on components and resets them on semantic tags (`m-0`).
 - [ ] **Text Formatting**: Uses Tailwind utility classes (`font-bold`) instead of semantic tags (`<b>`, `<strong>`) for styling.
+- [ ] **Enum Definitions**: UI kit components use enums for all variants, states, and configurable options with proper exports and usage throughout the component.
 - [ ] **Aceternity UI**: If adding a new component, it follows all rules in the "Aceternity UI Component Guidelines" section.
 
 ### 📋 Forms

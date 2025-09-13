@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+**/__snapshots__/
+
 
 # next.js
 /.next/
@@ -49,3 +51,7 @@ next-env.d.ts
 # Local build outputs and IDE configurations
 jules-scratch/
 .swc/
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
