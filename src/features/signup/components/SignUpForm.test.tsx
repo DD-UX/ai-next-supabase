@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import SignUpForm from '@/features/signup/components/SignUpForm';
 import { SignUpContext, SignUpContextProps } from '@/features/signup/contexts/SignUpContext';
 
-const getMockFormik = (isLoading = false, error: Error | null = null) =>
+const getMockFormik = (isSubmitting = false, error: Error | null = null) =>
   ({
     formikInstance: {
       values: { email: '', password: '', confirmPassword: '' },
@@ -13,8 +13,8 @@ const getMockFormik = (isLoading = false, error: Error | null = null) =>
       handleChange: jest.fn(),
       handleBlur: jest.fn(),
       handleSubmit: jest.fn(),
+      isSubmitting,
     },
-    isLoading,
     error,
   }) as unknown as SignUpContextProps;
 

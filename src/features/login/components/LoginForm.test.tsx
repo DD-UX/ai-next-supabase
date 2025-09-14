@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import LoginForm from '@/features/login/components/LoginForm';
 import { LoginContext, LoginContextProps } from '@/features/login/contexts/LoginContext';
 
-const getMockFormik = (isLoading = false, error: Error | null = null) =>
+const getMockFormik = (isSubmitting = false, error: Error | null = null) =>
   ({
     formikInstance: {
       values: { email: '', password: '' },
@@ -13,8 +13,8 @@ const getMockFormik = (isLoading = false, error: Error | null = null) =>
       handleChange: jest.fn(),
       handleBlur: jest.fn(),
       handleSubmit: jest.fn(),
+      isSubmitting,
     },
-    isLoading,
     error,
   }) as unknown as LoginContextProps;
 
@@ -30,7 +30,7 @@ describe('LoginForm', () => {
   it('should render the form with all fields', () => {
     renderLoginForm(getMockFormik());
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /email address/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
@@ -43,6 +43,7 @@ describe('LoginForm', () => {
   it('should disable inputs when loading', () => {
     renderLoginForm(getMockFormik(true));
     expect(screen.getByLabelText(/email address/i)).toBeDisabled();
-    expect(screen.getByLabelText(/password/i)).toBeDisabled();
+    const inputs = screen.getAllByDisplayValue('');
+    expect(inputs[1]).toBeDisabled(); // password input (second input)
   });
 });

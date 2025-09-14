@@ -170,4 +170,39 @@ describe('button-legacy Component', () => {
 
     jest.useRealTimers();
   });
+
+  it('is disabled and shows loading state when loading prop is true', async () => {
+    render(<Button loading>Loading Button</Button>);
+    const button = screen.getByRole('button');
+    
+    expect(button).toBeDisabled();
+    await waitFor(() => {
+      expect(screen.getByText('Loading, please wait.')).toBeInTheDocument();
+    });
+  });
+
+  it('is enabled and hides loading state when loading prop is false', () => {
+    render(<Button loading={false}>Normal Button</Button>);
+    const button = screen.getByRole('button');
+    
+    expect(button).not.toBeDisabled();
+    expect(screen.queryByText('Loading, please wait.')).not.toBeInTheDocument();
+    expect(screen.getByText('Normal Button')).toBeInTheDocument();
+  });
+
+  it('switches from loading to normal state when loading prop changes', async () => {
+    const { rerender } = render(<Button loading>Loading Button</Button>);
+    const button = screen.getByRole('button');
+    
+    expect(button).toBeDisabled();
+    await waitFor(() => {
+      expect(screen.getByText('Loading, please wait.')).toBeInTheDocument();
+    });
+
+    rerender(<Button loading={false}>Normal Button</Button>);
+    
+    expect(button).not.toBeDisabled();
+    expect(screen.queryByText('Loading, please wait.')).not.toBeInTheDocument();
+    expect(screen.getByText('Normal Button')).toBeInTheDocument();
+  });
 });
