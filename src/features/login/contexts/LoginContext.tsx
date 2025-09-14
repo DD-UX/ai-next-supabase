@@ -18,7 +18,6 @@ type LoginFormType = {
 
 export type LoginContextProps = {
   formikInstance: ReturnType<typeof useFormik<LoginFormType>>;
-  isLoading: boolean;
   error: Error | null;
 };
 
@@ -57,11 +56,8 @@ export const LoginProvider = ({ children }: LoginProviderProps) => {
     onSubmit,
   });
 
-  const { isSubmitting } = formikInstance;
-
   const contextValue = {
     formikInstance,
-    isLoading: isSubmitting,
     error,
   };
 

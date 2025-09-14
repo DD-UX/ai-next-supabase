@@ -17,7 +17,6 @@ type SignUpFormType = {
 
 export type SignUpContextProps = {
   formikInstance: ReturnType<typeof useFormik<SignUpFormType>>;
-  isLoading: boolean;
   error: AuthError | null;
 };
 
@@ -26,11 +25,9 @@ export const SignUpContext = createContext<SignUpContextProps>({} as SignUpConte
 type SignUpProviderProps = PropsWithChildren;
 
 export const SignUpProvider = ({ children }: SignUpProviderProps) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
 
   const onSubmit: FormikConfig<SignUpFormType>['onSubmit'] = async (values, { setSubmitting }) => {
-    setIsLoading(true);
     setError(null);
 
     const { error: signUpError } = await supabase.auth.signUp({
@@ -43,11 +40,10 @@ export const SignUpProvider = ({ children }: SignUpProviderProps) => {
     } else {
       // User is signed up. If email confirmation is disabled in Supabase,
       // the user is also logged in at this point.
-      // A redirect or other action can happen here.
+      // TODO A redirect or other action can happen here.
       alert('Sign up successful! Please check your email to confirm your registration.');
     }
 
-    setIsLoading(false);
     setSubmitting(false);
   };
 
@@ -63,7 +59,6 @@ export const SignUpProvider = ({ children }: SignUpProviderProps) => {
 
   const contextValue = {
     formikInstance,
-    isLoading,
     error,
   };
 

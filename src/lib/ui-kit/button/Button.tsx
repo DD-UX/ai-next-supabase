@@ -1,7 +1,19 @@
 'use client';
 
-import { ButtonHTMLAttributes, JSX, MouseEvent, MouseEventHandler, PropsWithChildren } from 'react';
-import { forwardRef, startTransition, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  ButtonHTMLAttributes,
+  forwardRef,
+  JSX,
+  MouseEvent,
+  MouseEventHandler,
+  PropsWithChildren,
+  startTransition,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { motion, MotionProps, useAnimate } from 'motion/react';
 
 import { cn } from '@/lib/utils';
@@ -28,6 +40,7 @@ type ButtonProps = PropsWithChildren<
       onClick?: (event: MouseEvent<HTMLButtonElement>) => void | Promise<void>;
       full?: boolean;
       whileTap?: MotionProps['whileTap'];
+      loading?: boolean;
     }
 >;
 
@@ -54,7 +67,20 @@ const disabledClasses = 'disabled:bg-slate-500 disabled:text-white/80';
 const fullClasses = 'w-full';
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, variant = ButtonVariants.PRIMARY, className, disabled, onClick, full, whileTap, ...props }, ref) => {
+  (
+    {
+      children,
+      variant = ButtonVariants.PRIMARY,
+      className,
+      disabled,
+      onClick,
+      full,
+      whileTap,
+      loading = false,
+      ...props
+    },
+    ref,
+  ) => {
     const [scope, animate] = useAnimate<HTMLButtonElement>();
     const [status, setStatus] = useState<ButtonStatus>(ButtonStatus.IDLE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -116,6 +142,18 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       },
       [status, animateLoading, animateSuccess, onClick],
     );
+
+    useEffect(() => {
+      if (loading) {
+        startTransition(() => {
+          setStatus(ButtonStatus.LOADING);
+        });
+      } else {
+        startTransition(() => {
+          setStatus(ButtonStatus.IDLE);
+        });
+      }
+    }, [loading]);
 
     // Cleanup timeout on unmount
     useEffect(() => {

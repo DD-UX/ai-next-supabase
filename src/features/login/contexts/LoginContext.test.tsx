@@ -1,5 +1,6 @@
 import { type PropsWithChildren, useContext } from 'react';
 import { useRouter } from 'next/navigation';
+import { Session, User } from '@supabase/auth-js/src/lib/types';
 import { act, renderHook } from '@testing-library/react';
 import * as yup from 'yup';
 
@@ -32,10 +33,20 @@ describe('LoginProvider', () => {
 
   beforeEach(() => {
     mockPush = jest.fn();
-    mockUseRouter.mockReturnValue({ push: mockPush });
-    mockSignInWithPassword = jest
-      .spyOn(supabase.auth, 'signInWithPassword')
-      .mockImplementation(() => Promise.resolve({ error: null }));
+    mockUseRouter.mockReturnValue({
+      push: mockPush,
+      back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+    });
+    mockSignInWithPassword = jest.spyOn(supabase.auth, 'signInWithPassword').mockImplementation(() =>
+      Promise.resolve({
+        data: { user: {} as User, session: {} as Session },
+        error: null,
+      }),
+    ) as jest.Mock;
   });
 
   afterEach(() => {
@@ -45,7 +56,10 @@ describe('LoginProvider', () => {
   const wrapper = ({ children }: PropsWithChildren) => <LoginProvider>{children}</LoginProvider>;
 
   it('should handle successful sign-in and redirect', async () => {
-    mockSignInWithPassword.mockResolvedValueOnce({ error: null });
+    mockSignInWithPassword.mockResolvedValueOnce({
+      data: { user: {} as User, session: {} as Session },
+      error: null,
+    });
 
     const { result } = renderHook(() => useContext(LoginContext), { wrapper });
 
@@ -62,7 +76,10 @@ describe('LoginProvider', () => {
 
   it('should handle sign-in failure and set error state', async () => {
     const signInError = new Error('Sign-in failed');
-    mockSignInWithPassword.mockResolvedValueOnce({ error: signInError });
+    mockSignInWithPassword.mockResolvedValueOnce({
+      data: { user: null, session: null },
+      error: signInError,
+    });
 
     const { result } = renderHook(() => useContext(LoginContext), { wrapper });
 
